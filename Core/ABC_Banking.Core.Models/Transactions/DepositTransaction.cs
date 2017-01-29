@@ -26,7 +26,7 @@ namespace ABC_Banking.Core.Models.Transactions
         public decimal CashValue { get; set; }
 
 
-        public Task<bool> Process()
+        public bool IsValid()
         {
             throw new NotImplementedException();
         }

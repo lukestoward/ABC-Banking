@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ABC_Banking.Core.Validation
 {
@@ -13,6 +14,11 @@ namespace ABC_Banking.Core.Validation
         List<string> Errors { get; }
 
         /// <summary>
+        /// Contains a list of exceptions
+        /// </summary>
+        List<Exception> Exceptions { get; }
+
+        /// <summary>
         /// Call to check if the result contains an error
         /// </summary>
         /// <returns>boolean</returns>
@@ -24,6 +30,11 @@ namespace ABC_Banking.Core.Validation
         /// <param name="errorMessage"></param>
         void AddError(string errorMessage);
 
+        /// <summary>
+        /// Add an exception to the list of exceptions
+        /// </summary>
+        /// <param name="ex"></param>
+        void AddException(Exception ex);
 
     }
 }

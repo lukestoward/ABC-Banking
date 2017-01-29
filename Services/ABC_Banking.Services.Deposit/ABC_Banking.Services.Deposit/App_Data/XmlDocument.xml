@@ -493,6 +493,20 @@
             <param name="model"></param>
             <returns>HttpActionResult</returns>
         </member>
+        <member name="M:ABC_Banking.Services.Deposit.Controllers.DepositController.ProcessDepositBox(ABC_Banking.Services.Deposit.Models.DepositRequest)">
+            <summary>
+            Endpoint to process a deposit request made via a deposit box slip
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ABC_Banking.Services.Deposit.Controllers.DepositController.ProcessDepositCashier(ABC_Banking.Services.Deposit.Models.DepositRequest)">
+            <summary>
+            Endpoint to process a deposit request made via a face to face cashier transaction
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="T:ABC_Banking.Services.Deposit.DepositHandler">
             <summary>
             Logic for processing the deposit request

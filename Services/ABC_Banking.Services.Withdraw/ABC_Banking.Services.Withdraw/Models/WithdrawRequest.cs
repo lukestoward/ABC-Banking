@@ -5,11 +5,6 @@ namespace ABC_Banking.Services.Withdraw.Models
 {
     public class WithdrawRequest
     {
-        public WithdrawRequest()
-        {
-            PIN = new int[4];
-        }
-
         /// <summary>
         /// The account holders name
         /// </summary>
@@ -32,7 +27,7 @@ namespace ABC_Banking.Services.Withdraw.Models
         /// Card PIN authorisation number
         /// </summary>
         [Required]
-        public int[] PIN { get; set; }
+        public int Pin { get; set; }
 
         /// <summary>
         /// DateTime stamp the deposit was made

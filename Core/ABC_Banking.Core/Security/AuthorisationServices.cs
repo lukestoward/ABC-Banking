@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ABC_Banking.Core.DataAccess;
 using ABC_Banking.Core.Models.BankCards;
@@ -33,9 +30,33 @@ namespace ABC_Banking.Core.Security
             return result;
         }
 
+
+        #region Dispose
+
+        private bool disposed = false;
+
+        /// <summary>
+        /// Handle the disposal of the unit of work obj
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _unitOfWork.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        #endregion
     }
 }

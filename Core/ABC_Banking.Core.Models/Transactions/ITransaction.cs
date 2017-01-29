@@ -13,6 +13,6 @@ namespace ABC_Banking.Core.Models.Transactions
         DateTime DateRequested { get; set; }
         Guid BankAccountId { get; set; }
 
-        Task<bool> Process();
+        bool IsValid();
     }
 }

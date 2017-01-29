@@ -29,7 +29,7 @@ namespace ABC_Banking.Core.Models.BankCards
         [Required]
         public string AccountNumber { get; set; }
 
-        [Required, MinLength(4), MaxLength(4)]
+        [Required, Range(0001, 9999)]
         public int Pin { get; set; }
 
         [Required]

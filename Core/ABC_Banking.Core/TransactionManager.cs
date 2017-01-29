@@ -2,6 +2,7 @@
 using ABC_Banking.Core.DataAccess;
 using ABC_Banking.Core.Models.BankAccounts;
 using ABC_Banking.Core.Models.Transactions;
+using ABC_Banking.Core.Validation;
 
 namespace ABC_Banking.Core
 {
@@ -9,10 +10,12 @@ namespace ABC_Banking.Core
     {
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
 
-        public bool FinaliseTransaction(BankAccount account, ITransaction transaction)
+        public IValidationResult FinaliseTransaction(ITransaction transaction)
         {
             try
             {
+                ValidationResult vResult = new ValidationResult();
+
                 /* Additional checks and business logic [here]
                  * to manage the saving of transactions. You could have
                  * logic that pushed the transaction to a message queue that
@@ -21,19 +24,28 @@ namespace ABC_Banking.Core
                  * to show up.
                  */
 
+                //Check we have been passed an object
+                if (transaction == null)
+                {
+                    vResult.AddException(new ArgumentNullException(nameof(transaction), "A transaction object must be provided"));
+                    return vResult;
+                }
+
+
+
                 //Simply save the transaction to the relevant repository
                 if (transaction is DepositTransaction)
                 {
                     _unitOfWork.DepositTransactionRepository.Insert((DepositTransaction)transaction);
                 }
-                //else if (transaction is WithdrawalTransaction)
-                //{
-                //    _unitOfWork.WithdrawalTransactionRepository.Insert((WithdrawalTransaction)transaction);
-                //}
+                else if (transaction is WithdrawTransaction)
+                {
+                    ProcessWithdrawRequest((WithdrawTransaction) transaction);
+                }
 
                 _unitOfWork.Save();
 
-                return true;
+                return vResult;
             }
             catch (Exception ex)
             {
@@ -43,6 +55,17 @@ namespace ABC_Banking.Core
             
         }
 
+
+        private void ProcessWithdrawRequest(WithdrawTransaction transaction)
+        {
+            //1. Find Bank Account
+            //2. Subtract amount
+            //3. Insert transaction into database
+            //4. Save changes
+
+
+
+        }
 
 
 
