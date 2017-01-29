@@ -44,6 +44,15 @@ namespace ABC_Banking.Core
                 {
                     vResult = await ProcessWithdrawRequest((WithdrawTransaction)transaction);
                 }
+                else if (transaction is TransferTransaction)
+                {
+                    vResult = await ProcessBankTransfer((TransferTransaction) transaction);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
 
                 return vResult;
             }
@@ -111,6 +120,12 @@ namespace ABC_Banking.Core
             }
 
         }
+
+        private async Task<ValidationResult> ProcessBankTransfer(TransferTransaction transaction)
+        {
+            return null;
+        }
+
 
 
         #region DISPOSE 

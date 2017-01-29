@@ -27,8 +27,9 @@ namespace ABC_Banking.Core.DataAccess
             modelBuilder.Entity<ISAFixedAccount>().ToTable("ISAFixedAccounts");
 
             //Transaction types
-            modelBuilder.Entity<DepositTransaction>().ToTable("DepositTransaction");
-            modelBuilder.Entity<WithdrawTransaction>().ToTable("WithdrawTransaction");
+            modelBuilder.Entity<DepositTransaction>().ToTable("DepositTransactions");
+            modelBuilder.Entity<WithdrawTransaction>().ToTable("WithdrawTransactions");
+            modelBuilder.Entity<TransferTransaction>().ToTable("BankTransferTransactions");
 
             //Bank Card types
             modelBuilder.Entity<DebitCard>().ToTable("DebitCards");
