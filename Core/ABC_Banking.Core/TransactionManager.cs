@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ABC_Banking.Core.DataAccess;
 using ABC_Banking.Core.Models.BankAccounts;
 using ABC_Banking.Core.Models.Transactions;
@@ -10,11 +12,18 @@ namespace ABC_Banking.Core
     {
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
 
-        public IValidationResult FinaliseTransaction(ITransaction transaction)
+        public async Task<ValidationResult> FinaliseTransaction(ITransaction transaction)
         {
+            ValidationResult vResult = new ValidationResult();
+
             try
             {
-                ValidationResult vResult = new ValidationResult();
+                //Check we have been passed an object
+                if (transaction == null)
+                {
+                    vResult.AddException(new ArgumentNullException(nameof(transaction), "A transaction object must be provided"));
+                    return vResult;
+                }
 
                 /* Additional checks and business logic [here]
                  * to manage the saving of transactions. You could have
@@ -24,50 +33,87 @@ namespace ABC_Banking.Core
                  * to show up.
                  */
 
-                //Check we have been passed an object
-                if (transaction == null)
-                {
-                    vResult.AddException(new ArgumentNullException(nameof(transaction), "A transaction object must be provided"));
-                    return vResult;
-                }
-
 
 
                 //Simply save the transaction to the relevant repository
                 if (transaction is DepositTransaction)
                 {
-                    _unitOfWork.DepositTransactionRepository.Insert((DepositTransaction)transaction);
+                    vResult = await ProcessDepositRequest((DepositTransaction)transaction);
                 }
                 else if (transaction is WithdrawTransaction)
                 {
-                    ProcessWithdrawRequest((WithdrawTransaction) transaction);
+                    vResult = await ProcessWithdrawRequest((WithdrawTransaction)transaction);
                 }
 
+                return vResult;
+            }
+            catch (Exception ex)
+            {
+                vResult.AddException(ex);
+                return vResult;
+            }
+
+        }
+
+        private async Task<ValidationResult> ProcessDepositRequest(DepositTransaction transaction)
+        {
+            try
+            {
+                _unitOfWork.DepositTransactionRepository.Insert(transaction);
+                _unitOfWork.Save();
+
+                //Success
+                return new ValidationResult();
+            }
+            catch (Exception ex)
+            {
+                var vResult = new ValidationResult();
+                vResult.AddException(ex);
+                return vResult;
+            }
+        }
+
+        private async Task<ValidationResult> ProcessWithdrawRequest(WithdrawTransaction transaction)
+        {
+            var vResult = new ValidationResult();
+
+            try
+            {
+                //1. Find Bank Account
+                BankAccount account = await _unitOfWork.BankAccountRepository.GetFirst(x => x.AccountNumber == transaction.AccountNumber);
+
+                if (account == null)
+                {
+                    vResult.AddException(new KeyNotFoundException("Bank Account could not be found"));
+                    return vResult;
+                }
+
+                //2. Subtract amount
+                account.Balance -= transaction.CashValue;
+
+                //2.1 Add bank account Id as foreign key to transaction
+                transaction.BankAccountId = account.Id;
+
+                _unitOfWork.BankAccountRepository.Update(account);
+
+                //3. Insert transaction into database
+                _unitOfWork.WithdrawTransactionRepository.Insert(transaction);
+
+                //4. Save changes
                 _unitOfWork.Save();
 
                 return vResult;
             }
             catch (Exception ex)
             {
-                //Handle exception
-                throw;
+                vResult.AddException(ex);
+                return vResult;
             }
-            
-        }
-
-
-        private void ProcessWithdrawRequest(WithdrawTransaction transaction)
-        {
-            //1. Find Bank Account
-            //2. Subtract amount
-            //3. Insert transaction into database
-            //4. Save changes
-
-
 
         }
 
 
+        #region DISPOSE 
 
         private bool disposed = false;
 
@@ -92,5 +138,7 @@ namespace ABC_Banking.Core
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        #endregion
     }
 }

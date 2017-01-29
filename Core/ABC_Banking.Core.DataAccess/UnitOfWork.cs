@@ -15,6 +15,7 @@ namespace ABC_Banking.Core.DataAccess
         private GenericRepository<BankAccount> _bankAccountRepository;
         private GenericRepository<BankCard> _bankCardRepository;
         private GenericRepository<DepositTransaction> _depositTransactionRepository;
+        private GenericRepository<WithdrawTransaction> _withdrawTransactionRepository;
 
 
         //Handle the creation and get function of each repository
@@ -51,6 +52,18 @@ namespace ABC_Banking.Core.DataAccess
                     this._depositTransactionRepository = new GenericRepository<DepositTransaction>(_context);
                 }
                 return _depositTransactionRepository;
+            }
+        }
+
+        public GenericRepository<WithdrawTransaction> WithdrawTransactionRepository
+        {
+            get
+            {
+                if (this._withdrawTransactionRepository == null)
+                {
+                    this._withdrawTransactionRepository = new GenericRepository<WithdrawTransaction>(_context);
+                }
+                return _withdrawTransactionRepository;
             }
         }
 

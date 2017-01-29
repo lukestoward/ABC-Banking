@@ -19,6 +19,12 @@ namespace ABC_Banking.Services.Withdraw
 
         internal async Task<IValidationResult> Process(WithdrawRequest request)
         {
+            //Test for positive values
+            bool valid = CheckRequestValues(request);
+
+            if (valid == false)
+                return _result;
+
             //First check the authentication details
             bool authorised = await CheckAuthorisation(request);
 
@@ -32,9 +38,20 @@ namespace ABC_Banking.Services.Withdraw
                 return _result;
 
             //Now we can actually commit the transaction.
-            await FinaliseWithdrawal(request);
+            bool complete = await FinaliseWithdrawal(request);
 
             return _result;
+        }
+
+        private bool CheckRequestValues(WithdrawRequest request)
+        {
+            if (request.TotalCashValue <= 0m)
+            {
+                _result.AddError("A positive decimal value must be withdrawn. Please check the withdraw amount");
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -99,7 +116,7 @@ namespace ABC_Banking.Services.Withdraw
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        private Task FinaliseWithdrawal(WithdrawRequest request)
+        private async Task<bool> FinaliseWithdrawal(WithdrawRequest request)
         {
             try
             {
@@ -116,22 +133,22 @@ namespace ABC_Banking.Services.Withdraw
                     //Pass the transaction to the core to handle
                     using (var transactionManager = new TransactionManager())
                     {
-                        var success = transactionManager.FinaliseTransaction(transaction);
+                        ValidationResult vResult = await transactionManager.FinaliseTransaction(transaction);
 
-                        if (success == false)
+                        if (vResult.HasError())
                         {
                             //Generic failure error (should use a more informative error)
                             _result.AddError("Unable to process transaction at this time. Please try again later");
                         }
-
-                        return success;
                     }
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
-                
-                throw;
+                _result.AddException(ex);
+                return true;
             }
         }
     }

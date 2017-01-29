@@ -28,6 +28,7 @@ namespace ABC_Banking.Core.DataAccess
 
             //Transaction types
             modelBuilder.Entity<DepositTransaction>().ToTable("DepositTransaction");
+            modelBuilder.Entity<WithdrawTransaction>().ToTable("WithdrawTransaction");
 
             //Bank Card types
             modelBuilder.Entity<DebitCard>().ToTable("DebitCards");
@@ -45,10 +46,7 @@ namespace ABC_Banking.Core.DataAccess
         public DbSet<RegularSaverAccount> RegularSaverAccounts  { get; set; }
         public DbSet<InstantSaverAccount> InstantSaverAccounts { get; set; }
         public DbSet<ISAFixedAccount> ISAFixedAccounts { get; set; }
-
-        //Transaction variations
-        //public DbSet<ITransaction> Transactions { get; set; }
-
+        
         //Bank card variations
         public DbSet<DebitCard> DebitCards { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }

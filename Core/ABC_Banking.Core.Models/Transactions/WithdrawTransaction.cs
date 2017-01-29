@@ -11,6 +11,7 @@ namespace ABC_Banking.Core.Models.Transactions
         public WithdrawTransaction(decimal requestedAmount)
         {
             CashValue = requestedAmount;
+            DateRequested = DateTime.UtcNow;
         }
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -25,7 +25,7 @@ namespace ABC_Banking.Core.Validation
         
 
         // Methods
-        bool IValidationResult.HasError()
+        public bool HasError()
         {
             return Errors.Any() || Exceptions.Any();
         }
