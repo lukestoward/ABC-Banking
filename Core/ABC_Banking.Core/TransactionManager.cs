@@ -21,7 +21,8 @@ namespace ABC_Banking.Core
                 //Check we have been passed an object
                 if (transaction == null)
                 {
-                    vResult.AddException(new ArgumentNullException(nameof(transaction), "A transaction object must be provided"));
+                    vResult.AddException(new ArgumentNullException(nameof(transaction),
+                        "A transaction object must be provided"));
                     return vResult;
                 }
 
@@ -38,11 +39,11 @@ namespace ABC_Banking.Core
                 //Simply save the transaction to the relevant repository
                 if (transaction is DepositTransaction)
                 {
-                    vResult = await ProcessDepositRequest((DepositTransaction)transaction);
+                    vResult = await ProcessDepositRequest((DepositTransaction) transaction);
                 }
                 else if (transaction is WithdrawTransaction)
                 {
-                    vResult = await ProcessWithdrawRequest((WithdrawTransaction)transaction);
+                    vResult = await ProcessWithdrawRequest((WithdrawTransaction) transaction);
                 }
                 else if (transaction is TransferTransaction)
                 {
@@ -89,7 +90,8 @@ namespace ABC_Banking.Core
             try
             {
                 //1. Find Bank Account
-                BankAccount account = await _unitOfWork.BankAccountRepository.GetFirst(x => x.AccountNumber == transaction.AccountNumber);
+                BankAccount account =
+                    await _unitOfWork.BankAccountRepository.GetFirst(x => x.AccountNumber == transaction.AccountNumber);
 
                 if (account == null)
                 {
@@ -123,7 +125,32 @@ namespace ABC_Banking.Core
 
         private async Task<ValidationResult> ProcessBankTransfer(TransferTransaction transaction)
         {
-            return null;
+            ValidationResult vResult = new ValidationResult();
+
+            try
+            {
+                /*
+                 * Realistically a bank transfer request can take some time to be completed,
+                 * or may have a specific date to complete the transfer as such, to simulate 
+                 * that behaviour we will not deduct the funds from the
+                 * customers account. Instead we would save the transaction to the database, 
+                 * notify a sub system that would process the transaction. However this 
+                 * subsystem would be a seperate application and out of scope here.
+                 */
+
+                //We simple insert the transaction to be processed later.
+                _unitOfWork.TransferTransactionRepository.Insert(transaction);
+                await _unitOfWork.SaveAsync();
+
+                //Success
+                return new ValidationResult();
+            }
+            catch (Exception ex)
+            {
+
+                vResult.AddException(ex);
+                return vResult;
+            }
         }
 
 
