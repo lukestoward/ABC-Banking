@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ABC_Banking.Core.Models.BankAccounts;
 using ABC_Banking.Core.Models.BankCards;
 using ABC_Banking.Core.Models.Transactions;
@@ -16,6 +17,7 @@ namespace ABC_Banking.Core.DataAccess
         private GenericRepository<BankCard> _bankCardRepository;
         private GenericRepository<DepositTransaction> _depositTransactionRepository;
         private GenericRepository<WithdrawTransaction> _withdrawTransactionRepository;
+        private GenericRepository<TransferTransaction> _transferTransactionRepository;
 
 
         //Handle the creation and get function of each repository
@@ -67,12 +69,33 @@ namespace ABC_Banking.Core.DataAccess
             }
         }
 
+        public GenericRepository<TransferTransaction> TransferTransactionRepository
+        {
+            get
+            {
+                if (this._transferTransactionRepository == null)
+                {
+                    this._transferTransactionRepository = new GenericRepository<TransferTransaction>(_context);
+                }
+                return _transferTransactionRepository;
+            }
+        }
+
         /// <summary>
         /// Call to save changes tracked by the db context
         /// </summary>
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Asynchronous call to save changes on the db context
+        /// </summary>
+        /// <returns></returns>
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
         }
 
 
