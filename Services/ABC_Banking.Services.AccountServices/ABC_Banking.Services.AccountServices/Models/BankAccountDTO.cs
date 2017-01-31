@@ -18,8 +18,5 @@ namespace ABC_Banking.Services.AccountServices.Models
 
         [MinLength(6), MaxLength(6)]
         public string SortCode { get; set; }
-
-        [Required]
-        public Guid CustomerId { get; set; }
     }
 }

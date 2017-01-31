@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using ABC_Banking.Services.AccountServices.Models;
 
@@ -40,11 +35,16 @@ namespace ABC_Banking.Services.AccountServices.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         public async Task<IHttpActionResult> GetAccountBalance(BankAccountDTO model)
         {
             AccountServices services = new AccountServices();
             var balance = await services.GetAccountBalance(model);
+
+            if (balance == null)
+            {
+                return BadRequest("Unable to get bank account balance. Please check values provided");
+            }
 
             return Ok(balance);
         }

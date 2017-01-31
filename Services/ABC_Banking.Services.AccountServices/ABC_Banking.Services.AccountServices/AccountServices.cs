@@ -12,13 +12,13 @@ namespace ABC_Banking.Services.AccountServices
 {
     public class AccountServices
     {
-        public IValidationResult CreateBankAccount(NewBankAccount model)
-        {
-            ValidationResult vResult = new ValidationResult();
+        //public IValidationResult CreateBankAccount(NewBankAccount model)
+        //{
+        //    ValidationResult vResult = new ValidationResult();
 
 
-            return vResult;
-        }
+        //    return vResult;
+        //}
 
         public IValidationResult CloseBankAccount(BankAccountDTO model)
         {

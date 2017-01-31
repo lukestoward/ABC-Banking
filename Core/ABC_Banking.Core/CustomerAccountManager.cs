@@ -64,9 +64,18 @@ namespace ABC_Banking.Core
 
         private async Task<BankAccount> GetBankAccount(string accountNumber, string sortCode)
         {
-            return await _unitOfWork.BankAccountRepository.GetFirst(
-                    x => x.AccountNumber == accountNumber &&
-                         x.SortCode == sortCode);
+            try
+            {
+                 return await _unitOfWork.BankAccountRepository.GetFirst(
+                                    x => x.AccountNumber == accountNumber &&
+                                         x.SortCode == sortCode);
+            }
+            catch (Exception ex)
+            {
+                //Log Error
+                return null;
+            }
+           
         }
 
         private bool disposed = false;
