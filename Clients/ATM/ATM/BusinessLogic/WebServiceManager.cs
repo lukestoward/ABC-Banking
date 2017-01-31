@@ -3,8 +3,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using ATM.Models;
+using Newtonsoft.Json;
 
 namespace ATM.BusinessLogic
 {
@@ -33,7 +33,7 @@ namespace ATM.BusinessLogic
         //    }
         //}
 
-        public async Task<decimal> HandleGetBalanceRequest(string accNumber, string sortCode)
+        public AccountBalanceDTO HandleGetBalanceRequest(string accNumber, string sortCode)
         {
             string badHardCodedStringUrl = "http://localhost:56698/api/Account/GetAccountBalance";
 
@@ -43,27 +43,45 @@ namespace ATM.BusinessLogic
                 SortCode = sortCode
             };
 
-            string response = MakeHttpPostRequest(badHardCodedStringUrl, data);
+            CustomHttpResponse response = MakeHttpPostRequest(badHardCodedStringUrl, data);
 
+            //Check for errors
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                //Handle service error
+            }
 
-            return 0.00m;
+            //Deserialise response
+            try
+            {
+                AccountBalanceDTO responseObject =
+                    JsonConvert.DeserializeObject<AccountBalanceDTO>(response.ResponseBody);
+
+                return responseObject;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+            return null;
         }
 
-        private string MakeHttpPostRequest(string url, object data)
+        private CustomHttpResponse MakeHttpPostRequest(string url, object data)
         {
             // Create a request using a URL that can receive a post. 
             WebRequest request = WebRequest.Create(url);
             // Set the Method property of the request to POST.
             request.Method = "POST";
-
+            
             //Seralise data to json string
-            var json = new JavaScriptSerializer().Serialize(data);
+            var json = JsonConvert.SerializeObject(data);
 
             // convert it to a byte array.
             byte[] byteArray = Encoding.UTF8.GetBytes(json);
 
             // Set the ContentType property of the WebRequest.
-            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "application/json";
 
             // Set the ContentLength property of the WebRequest.
             request.ContentLength = byteArray.Length;
@@ -89,16 +107,22 @@ namespace ATM.BusinessLogic
             // Read the content.
             string responseFromServer = reader.ReadToEnd();
 
-            //Deserialise to an object
-            //var responseObject = new JavaScriptSerializer().DeserializeObject(responseFromServer);
+            //Create Custom Response object
+            CustomHttpResponse httpResult = new CustomHttpResponse
+            {
+                ResponseBody = responseFromServer,
+                StatusCode = ((HttpWebResponse)response).StatusCode
+            };
            
             // Clean up the streams.
             reader.Close();
             dataStream.Close();
             response.Close();
 
+            
+
             //Return
-            return responseFromServer;
+            return httpResult;
         }
     }
 }

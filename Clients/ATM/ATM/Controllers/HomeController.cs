@@ -22,12 +22,12 @@ namespace ATM.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<decimal> ViewBalance(BalanceRequestDTO model)
+        public decimal ViewBalance(BalanceRequestDTO model)
         {
             WebServiceManager services = new WebServiceManager();
-            var balance = await services.HandleGetBalanceRequest(model.AccountNumber, model.SortCode);
+            var balance = services.HandleGetBalanceRequest(model.AccountNumber, model.SortCode);
 
-            return balance;
+            return balance.Balance;
         }
 
         [HttpGet]
