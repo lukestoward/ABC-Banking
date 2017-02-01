@@ -100,7 +100,7 @@ namespace ABC_Banking.Core
                 }
 
                 //2. Subtract amount
-                account.Balance -= transaction.CashValue;
+                account.Balance -= transaction.TransactionAmount;
 
                 //2.1 Add bank account Id as foreign key to transaction
                 transaction.BankAccountId = account.Id;

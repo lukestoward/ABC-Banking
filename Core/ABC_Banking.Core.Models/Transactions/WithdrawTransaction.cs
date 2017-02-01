@@ -8,14 +8,22 @@ namespace ABC_Banking.Core.Models.Transactions
 {
     public class WithdrawTransaction : ITransaction
     {
+        public WithdrawTransaction()
+        {
+            
+        }
+
         public WithdrawTransaction(decimal requestedAmount)
         {
-            CashValue = requestedAmount;
+            TransactionAmount = requestedAmount;
             DateRequested = DateTime.UtcNow;
         }
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
+        [Required]
+        public string Description { get; set; }
 
         [Required]
         public DateTime DateRequested { get; set; }
@@ -33,19 +41,19 @@ namespace ABC_Banking.Core.Models.Transactions
         public BankAccount BankAccount { get; set; }
 
         [Required]
-        public decimal CashValue { get; set; }
+        public decimal TransactionAmount { get; set; }
 
 
         public bool IsValid()
         {
             // Check that the value is positive
-            if (CashValue <= 0.00m)
+            if (TransactionAmount <= 0.00m)
             {
                 return false;
             }
 
             //Check withdraw amount is NOT greater than balance
-            if (CashValue <= BankAccount?.Balance)
+            if (TransactionAmount <= BankAccount?.Balance)
                 return false;
 
             //Transaction must be valid

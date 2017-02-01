@@ -47,7 +47,12 @@ namespace ABC_Banking.Core.DataAccess
         public DbSet<RegularSaverAccount> RegularSaverAccounts  { get; set; }
         public DbSet<InstantSaverAccount> InstantSaverAccounts { get; set; }
         public DbSet<ISAFixedAccount> ISAFixedAccounts { get; set; }
-        
+
+        //Transaction Variations
+        public DbSet<DepositTransaction> DepositTransactions { get; set; }
+        public DbSet<WithdrawTransaction> WithdrawTransactions { get; set; }
+        public DbSet<TransferTransaction> BankTransferTransactions { get; set; }
+
         //Bank card variations
         public DbSet<DebitCard> DebitCards { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }

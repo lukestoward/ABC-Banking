@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using ABC_Banking.Core.Models;
 using ABC_Banking.Core.Models.BankAccounts;
 using ABC_Banking.Core.Models.BankCards;
+using ABC_Banking.Core.Models.Transactions;
 
 namespace ABC_Banking.Core.DataAccess.Migrations
 {
@@ -72,6 +74,31 @@ namespace ABC_Banking.Core.DataAccess.Migrations
                 context.RegularSaverAccounts.AddOrUpdate(x => x.AccountNumber, accountTwo);
 
                 context.SaveChanges();
+
+                //Transactions
+                DepositTransaction dt = new DepositTransaction
+                {
+                    BankAccountId = accountOne.Id,
+                    TransactionAmount = 100.00m,
+                    DateRequested = DateTime.UtcNow,
+                    Description = "Cashier Deposit"
+                };
+
+                WithdrawTransaction wt = new WithdrawTransaction()
+                {
+                    BankAccountId = accountOne.Id,
+                    AccountNumber = accountOne.AccountNumber,
+                    SortCode = accountOne.SortCode,
+                    DateRequested = DateTime.UtcNow,
+                    Description = "ATM Withdrawal",
+                    TransactionAmount = 30.00m
+                };
+
+                context.WithdrawTransactions.Add(wt);
+                context.DepositTransactions.Add(dt);
+
+                context.SaveChanges();
+
 
                 //BankCard
                 DebitCard debitCard = new DebitCard

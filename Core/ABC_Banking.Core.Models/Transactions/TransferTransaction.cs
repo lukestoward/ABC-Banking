@@ -17,6 +17,9 @@ namespace ABC_Banking.Core.Models.Transactions
         public Guid Id { get; set; }
 
         [Required]
+        public string Description { get; set; }
+
+        [Required]
         public DateTime DateRequested { get; set; }
 
         [Required]
@@ -26,7 +29,7 @@ namespace ABC_Banking.Core.Models.Transactions
         public BankAccount BankAccount { get; set; }
         
         [Required]
-        public decimal TransferAmount { get; set; }
+        public decimal TransactionAmount { get; set; }
 
         [Required, MaxLength(18)]
         public string TransferReference { get; set; }

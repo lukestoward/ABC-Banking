@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using ABC_Banking.Services.AccountServices.Models;
 
@@ -17,9 +14,15 @@ namespace ABC_Banking.Services.AccountServices.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpGet]
-        public IHttpActionResult GetMiniStatement(StatementRequest model)
+        public async Task<IHttpActionResult> GetMiniStatement([FromUri]StatementRequest model)
         {
-            return Ok();
+            StatementServices services = new StatementServices();
+            List<MiniStatementTransaction> statement = await services.GetMiniStatement(model);
+
+            if (statement == null)
+                return BadRequest("Unable to generate mini statement");
+
+            return Ok(statement);
         }
 
         /// <summary>
@@ -28,9 +31,15 @@ namespace ABC_Banking.Services.AccountServices.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpGet]
-        public IHttpActionResult GetFullStatement(StatementRequest model)
+        public async Task<IHttpActionResult> GetFullStatement([FromUri]StatementRequest model)
         {
-            return Ok();
+            StatementServices services = new StatementServices();
+            List<FullStatementTransaction> statement = await services.GetFullStatement(model);
+
+            if (statement == null)
+                return BadRequest("Unable to generate mini statement");
+
+            return Ok(statement);
         }
     }
 }
