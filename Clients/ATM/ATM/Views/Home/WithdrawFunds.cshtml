@@ -1,28 +1,102 @@
 ﻿
 @{
     ViewBag.Title = "Withdraw";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Withdraw</h2>
+<div class="screen">
 
-<p>Please choose the amount you wish to withdraw</p>
+    <h3>Please choose the amount you wish to withdraw</h3>
 
-<table>
-    <tr>
-        <td>£10</td>
-        <td>£50</td>
-    </tr>
-    <tr>
-        <td>£20</td>
-        <td>£80</td>
-    </tr>
-    <tr>
-        <td>£30</td>
-        <td>£100</td>
-    </tr>
-    <tr>
-        <td>£40</td>
-        <td>Enter amount</td>
-    </tr>
-</table>
+    <table style="width: 100%; margin-top: 50px;">
+        <tr>
+            <td style="padding: 5px">
+                @using (Html.BeginForm("WithdrawFunds", "Home", FormMethod.Post))
+            {
+                    <input name="Amount" value="10" hidden />
 
+                    <div class="main-option">
+                        <input type="submit" class="linkButton" value="£10" />
+                    </div>
+                }
+            </td>
+            <td style="padding: 5px">
+                @using (Html.BeginForm("WithdrawFunds", "Home", FormMethod.Post))
+            {
+                    <input name="Amount" value="50" hidden />
+
+                    <div class="main-option">
+                        <input type="submit" class="linkButton" value="£50" />
+                    </div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 5px">
+                @using (Html.BeginForm("WithdrawFunds", "Home", FormMethod.Post))
+            {
+                    <input name="Amount" value="20" hidden />
+
+                    <div class="main-option">
+                        <input type="submit" class="linkButton" value="£20" />
+                    </div>
+                }
+            </td>
+            <td style="padding: 5px">
+                @using (Html.BeginForm("WithdrawFunds", "Home", FormMethod.Post))
+            {
+                    <input name="Amount" value="80" hidden />
+
+                    <div class="main-option">
+                        <input type="submit" class="linkButton" value="£80" />
+                    </div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 5px">
+                @using (Html.BeginForm("WithdrawFunds", "Home", FormMethod.Post))
+            {
+                    <input name="Amount" value="30" hidden />
+
+                    <div class="main-option">
+                        <input type="submit" class="linkButton" value="£30" />
+                    </div>
+                }
+            </td>
+            <td style="padding: 5px">
+                @using (Html.BeginForm("WithdrawFunds", "Home", FormMethod.Post))
+            {
+                    <input name="Amount" value="100" hidden />
+
+                    <div class="main-option">
+                        <input type="submit" class="linkButton" value="£100" />
+                    </div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 5px">
+                @using (Html.BeginForm("WithdrawFunds", "Home", FormMethod.Post))
+            {
+                    <input name="Amount" value="40" hidden />
+
+                    <div class="main-option">
+                        <input type="submit" class="linkButton" value="£40" />
+                    </div>
+                }
+            </td>
+            <td style="padding: 5px">
+                @using (Html.BeginForm("WithdrawFunds", "Home", FormMethod.Post))
+            {
+                    <input name="Amount" value="200" hidden />
+
+                    <div class="main-option">
+                        <input type="submit" class="linkButton" value="£200" />
+                    </div>
+                }
+            </td>
+        </tr>
+    </table>
+
+</div>

@@ -13,8 +13,8 @@ namespace ABC_Banking.Services.AccountServices.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<IHttpActionResult> GetMiniStatement([FromUri]StatementRequest model)
+        [HttpPost]
+        public async Task<IHttpActionResult> GetMiniStatement(StatementRequest model)
         {
             StatementServices services = new StatementServices();
             List<MiniStatementTransaction> statement = await services.GetMiniStatement(model);

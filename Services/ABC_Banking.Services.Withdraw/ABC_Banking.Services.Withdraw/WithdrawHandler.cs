@@ -124,7 +124,8 @@ namespace ABC_Banking.Services.Withdraw
                 WithdrawTransaction transaction = new WithdrawTransaction(request.TotalCashValue)
                 {
                     AccountNumber = request.AccountNumber,
-                    SortCode = request.SortCode
+                    SortCode = request.SortCode,
+                    Description = "Withdrawal"
                 };
 
                 //Check we have created a valid transaction object

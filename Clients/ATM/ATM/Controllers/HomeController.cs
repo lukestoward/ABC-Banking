@@ -22,12 +22,12 @@ namespace ATM.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public decimal ViewBalance(BalanceRequestDTO model)
+        public ViewResult ViewBalance(BalanceRequestDTO model)
         {
             WebServiceManager services = new WebServiceManager();
             var balance = services.HandleGetBalanceRequest(model.AccountNumber, model.SortCode);
 
-            return balance.Balance;
+            return View(balance.Balance);
         }
 
         [HttpGet]
@@ -37,18 +37,45 @@ namespace ATM.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> WithdrawFunds(WithdrawFunds model)
+        public ActionResult WithdrawFunds(int amount)
         {
+            //Hardcoded values for demo purposes only
+            WithdrawFunds model = new WithdrawFunds
+            {
+                AccountHolderName = "Joe Blogs",
+                AccountNumber = "12345678",
+                CardNumber = "4485456965871348",
+                PIN = 1234,
+                SortCode = "445566",
+                TotalCashValue = amount
+            };
+
             WebServiceManager services = new WebServiceManager();
-            //await services.HandleWithdrawRequest(model);
-            return View();
+            WithdrawResponse response = services.HandleWithdrawRequest(model);
+
+            if (response.Approved == false)
+            {
+                return View("WithdrawResult", response.Reason);
+            }
+
+            string successMessage = "Please collect your cash below";
+
+            return View("WithdrawResult", null, successMessage);
         }
 
-        [HttpPost]
-        public ActionResult ViewStatment()
+        [HttpGet]
+        public ActionResult ViewStatement()
         {
+            MiniStatementRequestDTO model = new MiniStatementRequestDTO
+            {
+                AccountNumber = "12345678",
+                SortCode = "445566"
+            };
 
-            return null;
+            WebServiceManager services = new WebServiceManager();
+            List<MiniStatementItem> statement = services.HandleMiniStatmentRequest(model);
+
+            return View(statement);
         }
     }
 }

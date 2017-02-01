@@ -5,8 +5,18 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 40px;
+    background-image: url('../Media/background.jpg');
+    background-repeat: no-repeat;
+    background-position: right top;
+    background-size: 800px;
+    width: 800px;
+    height: 700px;
+}
+
+a, a:hover {
+     text-decoration: none; 
+     color: white;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -21,4 +31,36 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.screen {
+    width: 534px;
+    background-color: #557782;
+    height: 410px;
+    margin: 58px 97px;
+    padding: 20px 40px;
+    color: white;
+    text-align: center; 
+}
+
+.main-option {
+    background-color: #09a30f; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 1px 0 rgba(0,0,0,0.19); 
+}
+
+.linkButton { 
+     background: none;
+     border: none;
+     color: inherit;
+     cursor: pointer;
+     margin: 0
 }

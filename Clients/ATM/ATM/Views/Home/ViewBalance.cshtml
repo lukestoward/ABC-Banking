@@ -1,0 +1,21 @@
+﻿@model decimal
+
+@{
+    ViewBag.Title = "Your balance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="screen">
+    <h2>YOUR ACCOUNT BALANCE</h2>
+
+    <h3 style="margin: 50px 0 80px 0">BALANCE: @($"{Model:C}")</h3>
+
+    <a href="/">
+        <div class="main-option">
+            GO BACK
+        </div>
+    </a>
+
+
+</div>
+
