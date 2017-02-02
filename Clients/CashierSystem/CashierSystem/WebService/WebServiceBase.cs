@@ -7,7 +7,7 @@ namespace CashierSystem.WebService
 {
     internal abstract class WebServiceBase
     {
-        protected object MakeHttpRequest(string url, object data)
+        protected HttpCustomResult MakeHttpRequest(string url, object data)
         {
             try
             {
@@ -38,37 +38,45 @@ namespace CashierSystem.WebService
                 dataStream.Close();
 
                 // Get the response.
-                WebResponse response = request.GetResponse();
-
-                // Get the stream containing content returned by the server.
-                dataStream = response.GetResponseStream();
-
-                // Open the stream using a StreamReader for easy access.
-                StreamReader reader = new StreamReader(dataStream);
-
-                // Read the content.
-                string responseFromServer = reader.ReadToEnd();
-
-                //Create Custom Response object
-                CustomHttpResponse httpResult = new CustomHttpResponse
-                {
-                    ResponseBody = responseFromServer,
-                    StatusCode = ((HttpWebResponse)response).StatusCode
-                };
-
-                // Clean up the streams.
-                reader.Close();
-                dataStream.Close();
-                response.Close();
-
+                HttpCustomResult result = GetHttpResponse(request.GetResponse());
+                
                 //Return
-                return httpResult;
+                return result;
             }
-            catch (WebException wex)
+            catch (WebException e)
             {
-                //Log error
-                throw;
+                //Still retrieve the response
+                using (WebResponse response = e.Response)
+                {
+                    return GetHttpResponse(response);
+                }
             }
         }
+
+        private HttpCustomResult GetHttpResponse(WebResponse response)
+        {
+            HttpWebResponse httpResponse = (HttpWebResponse)response;
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+
+            HttpCustomResult result = new HttpCustomResult
+            {
+                MessageBody = reader.ReadToEnd(),
+                StatusCode = httpResponse.StatusCode
+            };
+
+            httpResponse.Close();
+            dataStream?.Close();
+            reader.Close();
+
+            return result;
+        }
+    }
+
+    internal class HttpCustomResult
+    {
+        public HttpStatusCode StatusCode { get; set; }
+
+        public string MessageBody { get; set; }
     }
 }

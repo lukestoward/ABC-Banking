@@ -30,7 +30,7 @@ namespace CashierSystem.Controllers
             DepositService service = new DepositService();
             bool success = service.ProcessDepositRequest(model);
 
-            return View()
+            return View();
         }
     }
 }

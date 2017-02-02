@@ -1,20 +1,24 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Web;
 using CashierSystem.Models;
 
 namespace CashierSystem.WebService
 {
-    internal class DepositService : WebServiceBase
+    internal class CustomerService : WebServiceBase
     {
-        public bool ProcessDepositRequest(DepositRequest request)
+        public bool CreateNewCustomer(RegisterCustomer model)
         {
             //Webservice address
-            string badStaticString = "http://localhost:50025/api/Deposit/ProcessDepositCashier";
+            string badStaticString = "http://localhost:56698//api/Customer/RegisterCustomer";
 
             //1. Validate values
             //Do some checks here...
 
             //2. Make HTTP Request to web service
-            HttpCustomResult response = MakeHttpRequest(badStaticString, request);
+            HttpCustomResult response = MakeHttpRequest(badStaticString, model);
 
             //3. Handle response
             if (response.StatusCode == HttpStatusCode.OK)
