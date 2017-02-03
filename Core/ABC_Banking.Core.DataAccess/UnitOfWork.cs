@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ABC_Banking.Core.Models;
 using ABC_Banking.Core.Models.BankAccounts;
 using ABC_Banking.Core.Models.BankCards;
 using ABC_Banking.Core.Models.Transactions;
@@ -13,6 +14,7 @@ namespace ABC_Banking.Core.DataAccess
 
 
         //Declare all the generic type repositories
+        private GenericRepository<Customer> _customerRepository;
         private GenericRepository<BankAccount> _bankAccountRepository;
         private GenericRepository<BankCard> _bankCardRepository;
         private GenericRepository<DepositTransaction> _depositTransactionRepository;
@@ -21,6 +23,18 @@ namespace ABC_Banking.Core.DataAccess
 
 
         //Handle the creation and get function of each repository
+        public GenericRepository<Customer> CustomerRepository
+        {
+            get
+            {
+                if (this._customerRepository == null)
+                {
+                    this._customerRepository = new GenericRepository<Customer>(_context);
+                }
+                return _customerRepository;
+            }
+        }
+
         public GenericRepository<BankAccount> BankAccountRepository
         {
             get

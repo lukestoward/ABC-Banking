@@ -107,10 +107,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\StatementController.cs" />
+    <Compile Include="CustomerServices.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountBalance.cs" />
+    <Compile Include="Models\BankAccountDetailsDTO.cs" />
     <Compile Include="Models\BankAccountDTO.cs" />
     <Compile Include="Models\CustomerDTO.cs" />
     <Compile Include="Models\FullStatementTransaction.cs" />

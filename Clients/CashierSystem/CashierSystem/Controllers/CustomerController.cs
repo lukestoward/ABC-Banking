@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Web.Mvc;
 using CashierSystem.Models;
 using CashierSystem.WebService;
@@ -7,6 +9,13 @@ namespace CashierSystem.Controllers
 {
     public class CustomerController : Controller
     {
+        private CustomerService service;
+
+        public CustomerController()
+        {
+            service = new CustomerService();    
+        }
+
         [HttpGet]
         public ActionResult Create()
         {
@@ -17,7 +26,6 @@ namespace CashierSystem.Controllers
         [HttpPost]
         public ActionResult Create(RegisterCustomer model)
         {
-            CustomerService service = new CustomerService();
             bool success = service.CreateNewCustomer(model);
 
             if (success == false)
@@ -29,11 +37,31 @@ namespace CashierSystem.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Displays a list of all customers
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public ActionResult Manage()
+        public ActionResult Index()
         {
+            //Get all customers
+            List<CustomerPartial> customers = service.GetAllCustomers();
 
-            return View();
+            return View(customers);
+        }
+
+        [HttpGet]
+        public ActionResult Details(Guid id)
+        {
+            CustomerDetailsViewModel customer = service.GetCustomerDetails(id);
+
+            if (customer == null)
+            {
+                ViewBag.Error = "Unable to load customer details.";
+                RedirectToAction("Index");
+            }
+
+            return View(customer);
         }
 
     }

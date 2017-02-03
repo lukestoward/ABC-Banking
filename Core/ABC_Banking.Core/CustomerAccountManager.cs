@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using ABC_Banking.Core.DataAccess;
+using ABC_Banking.Core.Models;
 using ABC_Banking.Core.Models.BankAccounts;
-using ABC_Banking.Core.Validation;
+using ValidationResult = ABC_Banking.Core.Validation.ValidationResult;
 
 namespace ABC_Banking.Core
 {
@@ -50,7 +53,7 @@ namespace ABC_Banking.Core
                 {
                     vResult.AddError("Insufficient funds");
                 }
-                
+
                 return vResult;
             }
             catch (Exception ex)
@@ -61,6 +64,80 @@ namespace ABC_Banking.Core
             }
         }
 
+        /// <summary>
+        /// Searches the database to try and find a customer with matching details
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        public async Task<bool> CustomerAlreadyExist(Customer customer)
+        {
+            Customer c = await _unitOfWork.CustomerRepository.GetFirst(x => x.FirstName == customer.FirstName
+                                                                            && x.Surname == customer.Surname
+                                                                            && x.AddressLine1 == customer.AddressLine1
+                                                                            && x.City == customer.City
+                                                                            && x.County == customer.County
+                                                                            && x.PostCode == customer.PostCode);
+
+            //Return true if exists
+            return c != null;
+        }
+
+        /// <summary>
+        /// Inserts a new customer in to the database
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        public async Task<ValidationResult> CreateCustomer(Customer customer)
+        {
+            ValidationResult vResult = new ValidationResult();
+
+            try
+            {
+                _unitOfWork.CustomerRepository.Insert(customer);
+                await _unitOfWork.SaveAsync();
+                return vResult;
+            }
+            catch (ValidationException vex)
+            {
+                vResult.AddException(vex);
+                return vResult;
+            }
+            catch (Exception ex)
+            {
+                vResult.AddError("An error occurred");
+                return vResult;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves every customer from the database
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Customer>> GetAllCustomers()
+        {
+            try
+            {
+                IEnumerable<Customer> customers = await _unitOfWork.CustomerRepository.Get();
+
+                return customers?.ToList();
+            }
+            catch (Exception ex)
+            {
+                //Log error
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a single customer using the ID primary key.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Customer> GetCustomerDetails(Guid id)
+        {
+            Customer customer = await _unitOfWork.CustomerRepository.GetFirst(x => x.Id == id);
+            return customer;
+        }
 
         private async Task<BankAccount> GetBankAccount(string accountNumber, string sortCode)
         {

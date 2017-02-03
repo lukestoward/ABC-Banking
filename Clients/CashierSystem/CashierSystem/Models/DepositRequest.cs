@@ -35,7 +35,7 @@ namespace CashierSystem.Models
         /// <summary>
         /// Total cash value of the deposit transaction
         /// </summary>
-        [Required]
+        [Required, Range(1, 10000)]
         public decimal TotalCashValue { get; set; }
     }
 }

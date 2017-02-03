@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web.Mvc;
 using CashierSystem.Models;
 using CashierSystem.WebService;
@@ -7,6 +8,36 @@ namespace CashierSystem.Controllers
 {
     public class BankAccountController : Controller
     {
+        [HttpGet]
+        public ActionResult GetAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult GetAccount(string accountNumber, string sortCode)
+        {
+            if (accountNumber == null || sortCode == null)
+            {
+                ModelState.AddModelError("", "Please check the values you have provided.");
+                return View();
+            }
+
+            BankAccountService service = new BankAccountService();
+            BankAccountDetails account = service.GetBankAccount(accountNumber, sortCode);
+
+            if (account == null)
+            {
+                ViewBag.Error = "Account not found";
+                return View();
+            }
+            else
+            {
+                return View("Details", account);
+            }
+        }
+
+
         [HttpGet]
         public ActionResult Create()
         {

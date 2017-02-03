@@ -16,6 +16,12 @@ namespace CashierSystem.Controllers
         public ActionResult NewDeposit()
         {
             var model= new DepositRequest();
+
+            //Populate values for demo
+            model.AccountHolderName = "Mr Luke Stoward";
+            model.AccountNumber = "12345678";
+            model.SortCode = "445566";
+
             return View(model);
         }
 

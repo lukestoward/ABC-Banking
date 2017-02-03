@@ -1,11 +1,35 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
+using ABC_Banking.Core.Models.BankAccounts;
 using ABC_Banking.Services.AccountServices.Models;
 
 namespace ABC_Banking.Services.AccountServices.Controllers
 {
     public class AccountController : ApiController
     {
+
+        /// <summary>
+        /// Retrieves a bank account from the database if it exists
+        /// </summary>
+        /// <param name="AccountNumber"></param>
+        /// <param name="SortCode"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IHttpActionResult> GetBankAccount([FromUri]BankAccountDTO model)
+        {
+            if (ModelState.IsValid == false)
+                return BadRequest("Please check values provided");
+
+            AccountServices services = new AccountServices();
+            BankAccountDetailsDTO account = await services.GetBankAccountDetails(model.AccountNumber, model.SortCode);
+
+            if (account == null)
+            {
+                return BadRequest("Account could not be retrieved");
+            }
+
+            return Ok(account);
+        }
 
         /// <summary>
         /// Used to open a new account for an existing customer

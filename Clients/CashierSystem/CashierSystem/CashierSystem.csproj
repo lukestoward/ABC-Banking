@@ -184,7 +184,10 @@
     <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DepositController.cs" />
+    <Compile Include="Models\BankAccount.cs" />
     <Compile Include="Models\CloseAccount.cs" />
+    <Compile Include="Models\CustomerDetailsViewModel.cs" />
+    <Compile Include="Models\CustomerPartial.cs" />
     <Compile Include="Models\NewBankAccount.cs" />
     <Compile Include="Models\RegisterCustomer.cs" />
     <Compile Include="Models\WithdrawRequest.cs" />
@@ -238,8 +241,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -264,6 +265,10 @@
     <Content Include="Views\Deposit\NewDeposit.cshtml" />
     <Content Include="Views\Customer\Create.cshtml" />
     <Content Include="Views\BankAccount\Close.cshtml" />
+    <Content Include="Views\Customer\Index.cshtml" />
+    <Content Include="Views\Customer\Details.cshtml" />
+    <Content Include="Views\BankAccount\GetAccount.cshtml" />
+    <Content Include="Views\BankAccount\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

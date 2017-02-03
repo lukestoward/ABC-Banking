@@ -62,6 +62,26 @@ namespace ABC_Banking.Services.AccountServices
             return balance;
         }
 
+        public async Task<BankAccountDetailsDTO> GetBankAccountDetails(string accountNumber, string sortCode)
+        {
+            BankAccount acc = await GetBankAccount(accountNumber, sortCode);
+
+            //Convert to serialisable transfer object
+            BankAccountDetailsDTO model = new BankAccountDetailsDTO
+            {
+                Balance = acc.Balance,
+                Id = acc.Id,
+                DateOpened = acc.DateOpened,
+                SortCode = acc.SortCode,
+                AccountNumber = acc.AccountNumber,
+                CustomerId = acc.CustomerId,
+                InterestRate = acc.InterestRate,
+                Type = acc.Type.ToString()
+            };
+
+            return model;
+        }
+
         private async Task<BankAccount> GetBankAccount(string accountNumber, string sortCode)
         {
             try
