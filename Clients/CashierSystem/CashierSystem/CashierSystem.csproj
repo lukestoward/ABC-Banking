@@ -269,10 +269,10 @@
     <Content Include="Views\Customer\Details.cshtml" />
     <Content Include="Views\BankAccount\GetAccount.cshtml" />
     <Content Include="Views\BankAccount\Details.cshtml" />
+    <Content Include="Views\Withdraw\Withdraw.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Withdraw\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

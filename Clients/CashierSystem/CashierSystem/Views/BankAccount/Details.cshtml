@@ -6,61 +6,87 @@
 
 <h2>Details</h2>
 
-<div>
-    <h4>BankAccountDetails</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.HiddenFor(model => model.Id)
-        </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DateOpened)
-        </dt>
+<h4>BankAccountDetails</h4>
+<hr />
 
-        <dd>
-            @Html.DisplayFor(model => model.DateOpened)
-        </dd>
+<div class="row">
+    <div class="col-xs-6">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.HiddenFor(model => model.Id)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AccountNumber)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateOpened)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AccountNumber)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.DateOpened)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SortCode)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.AccountNumber)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.SortCode)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.AccountNumber)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerId)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.SortCode)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CustomerId)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.SortCode)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Balance)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Balance)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.CustomerId)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.InterestRate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Balance)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.InterestRate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Balance)
+            </dd>
 
-    </dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.InterestRate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.InterestRate)
+            </dd>
+
+        </dl>
+    </div>
+
+    <div class="col-xs-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Actions</h3>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li>
+                        @Html.ActionLink("New Deposit", "NewDeposit", "Deposit")
+                    </li>
+                    <li>
+                        @Html.ActionLink("New Withdrawal", "Withdraw", "Withdraw")
+                    </li>
+                    <li>
+                        @Html.ActionLink("Bank Transfer", "NewTransfer", "Transfer")
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+

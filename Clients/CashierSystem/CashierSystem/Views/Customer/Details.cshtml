@@ -4,11 +4,9 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>CustomerDetailsViewModel</h4>
-    <hr />
+    <h2>Customer Details</h2>
+    <hr/>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.FirstName)
@@ -73,9 +71,9 @@
         <dd>
             @Html.DisplayFor(model => model.PostCode)
         </dd>
-
     </dl>
 </div>
+
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>

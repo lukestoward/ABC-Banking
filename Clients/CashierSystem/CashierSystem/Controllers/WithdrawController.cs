@@ -12,17 +12,20 @@ namespace CashierSystem.Controllers
     public class WithdrawController : Controller
     {
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Withdraw()
         {
             //Demo values
-            string accountNumber = "12345678";
-            string sortCode = "445566";
+            WithdrawRequest model = new WithdrawRequest
+            {
+                AccountHolderName = "Luke Stoward",
+                AccountNumber = "12345678",
+                CardNumber = "4485456965871348",
+                DateRequested = DateTime.UtcNow,
+                Pin = 1234,
+                SortCode = "445566",
+            };
 
-            //Get account information
-            BankAccountService service = new BankAccountService();
-            var bankAccount = service.GetAccountDetails(accountNumber, sortCode);
-
-            return View(bankAccount);
+            return View(model);
         }
 
         [HttpPost]
@@ -38,10 +41,10 @@ namespace CashierSystem.Controllers
 
             if (success)
             {
-                ViewBag.Message = "Transaction Complete";
+                TempData["Message"] = "Transaction Complete";
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Withdraw");
         }
     }
 }

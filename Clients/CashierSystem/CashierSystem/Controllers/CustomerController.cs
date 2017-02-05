@@ -34,7 +34,7 @@ namespace CashierSystem.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         /// <summary>
